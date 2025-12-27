@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:restapi/mvc/post/bloc/post_bloc.dart';
 import 'package:restapi/mvc/post/data/post_repository.dart';
+import 'package:restapi/mvc/post/view/homepage.dart';
 import 'package:restapi/mvc/post/view/post_form_page.dart';
 import 'package:restapi/mvc/post/view/post_page.dart';
 import 'dart:io';
@@ -13,17 +14,14 @@ import 'mvc/auth/data/auth_repository.dart';
 import 'mvc/auth/data/auth_storage.dart';
 import 'mvc/auth/view/login_page.dart';
 import 'mvc/auth/view/register_page.dart';
-// import 'mvc/posts/bloc/post_bloc.dart';
-// import 'mvc/posts/data/post_repository.dart';
-// import 'mvc/posts/view/post_page.dart';
-// import 'mvc/posts/view/post_form_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   HttpOverrides.global = CustomHttpOverrides();
   
-const baseUrl = 'http://192.168.90.205:8000/api';// Ganti dengan URL API Laravel Anda
+const baseUrl = 'http://192.168.1.52:8000/api';// Ganti dengan URL API Laravel Anda
 
   final authStorage = AuthStorage();
   final token = await authStorage.getToken();
@@ -113,7 +111,7 @@ class MyApp extends StatelessWidget {
                 if (context.mounted) {
                   try {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      '/posts',
+                      '/main',
                       (Route<dynamic> route) => false,
                     );
                   } catch (e) {
@@ -169,7 +167,7 @@ class MyApp extends StatelessWidget {
                         return BlocProvider.value(
                           value: context.read<PostBloc>()
                             ..add(const PostFetched()),
-                          child: const PostPage(),
+                          child: const MainScreen(),
                         );
                       } else {
                         return const LoginPage();
@@ -178,6 +176,7 @@ class MyApp extends StatelessWidget {
                   ),
               '/login': (context) => const LoginPage(),
               '/register': (context) => const RegisterPage(),
+              '/main': (context) => const MainScreen(),
               '/posts': (context) => const PostPage(),
               '/posts/form': (context) => const PostFormPage(),
             },
